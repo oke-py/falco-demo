@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: badsns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: badsns
+  template:
+    metadata:
+      name: badsns
+      labels:
+        app: badsns
+    spec:
+      containers:
+        - name: nginx
+          image: "example/badsns:v1.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          securityContext:
+            privileged: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  badsns
+spec:
+  selector:
+    app: badsns
+  type:  LoadBalancer
+  ports:
+  - name: http
+    port: 80
