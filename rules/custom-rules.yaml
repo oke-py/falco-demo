@@ -1,7 +1,7 @@
 customRules:
   reconnaissance.yaml: |-
     - list: reconnaissance_process
-      items: ["whoami"]
+      items: ["whoami", netstat", "ss"]
       
     - rule: Reconnaissance activity
       desc: Detected reconnaissance activity
