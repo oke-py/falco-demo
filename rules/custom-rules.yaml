@@ -14,7 +14,9 @@ customRules:
   persistence.yaml: |-
     - rule: User mgmt activity
       desc: activity by any programs that can manage users, passwords, or permissions
-      condition: spawned_process and container and proc.name in (user_mgmt_binaries)
+      condition: > 
+        spawned_process and proc.name in (user_mgmt_binaries) 
+        and not proc.pname in (user_mgmt_binaries) and container
       output: >
         User management binary command run inside of container
         (command=%proc.cmdline pid=%proc.pid user=%user.name %container.info image=%container.image)
