@@ -1,0 +1,10 @@
+customRules:
+  reconnaissance.yaml: |-
+    - list: reconnaissance_process
+      items: ["whoami"]
+      
+    - rule: Reconnaissance activity
+      desc: Detected reconnaissance activity
+      condition: spawned_process and proc.name in (reconnaissance_process)
+      output: Unexpected reconnaissance process spawned in container (command=%proc.cmdline pid=%proc.pid user=%user.name %container.info image=%container.image)
+      priority: INFO
