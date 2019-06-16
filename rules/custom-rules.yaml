@@ -1,3 +1,5 @@
+timezone: Asia/Tokyo
+
 customRules:
   reconnaissance.yaml: |-
     - list: reconnaissance_process
@@ -8,3 +10,13 @@ customRules:
       condition: spawned_process and proc.name in (reconnaissance_process)
       output: Unexpected reconnaissance process spawned in container (command=%proc.cmdline pid=%proc.pid user=%user.name %container.info image=%container.image)
       priority: INFO
+
+  persistence.yaml: |-
+    - rule: User mgmt activity
+      desc: activity by any programs that can manage users, passwords, or permissions
+      condition: spawned_process and container and proc.name in (user_mgmt_binaries)
+      output: >
+        User management binary command run inside of container
+        (command=%proc.cmdline pid=%proc.pid user=%user.name %container.info image=%container.image)
+      priority: NOTICE
+      tags: [users, mitre_persistence]
