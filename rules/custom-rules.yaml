@@ -3,12 +3,14 @@ timezone: Asia/Tokyo
 customRules:
   reconnaissance.yaml: |-
     - list: reconnaissance_process
-      items: ["whoami", netstat", "ss"]
+      items: ["whoami", "ps", "ifconfig", "ip", "netstat", "ss"]
       
     - rule: Reconnaissance activity
       desc: Detected reconnaissance activity
       condition: spawned_process and proc.name in (reconnaissance_process)
-      output: Unexpected reconnaissance process spawned in container (command=%proc.cmdline pid=%proc.pid user=%user.name %container.info image=%container.image)
+      output: >
+        Unexpected reconnaissance process spawned in container
+        (command=%proc.cmdline pid=%proc.pid user=%user.name %container.info image=%container.image)
       priority: INFO
 
   persistence.yaml: |-
